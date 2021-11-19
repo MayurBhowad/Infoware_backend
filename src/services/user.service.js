@@ -25,7 +25,7 @@ const getUserById = id => {
 }
 
 const registerUser = (data) => {
-    let sqlQuery = `insert into user(firstName, lastName, email, passwd) values("${data.firstName}","${data.lastName}","${data.email}","${data.passwd}")`;
+    let sqlQuery = `insert into user(firstName, lastName, email, passwd) values("${data.firstName}","${data.lastName}","${data.email}","${data.password}")`;
     return new Promise((resolve, reject) => {
         mysqlConnection.query(sqlQuery, (err, rows) => {
             if (err) {
