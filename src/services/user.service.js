@@ -39,7 +39,7 @@ const registerUser = (data) => {
 }
 
 const addUser = (data) => {
-    let sqlQuery = `insert into user(firstName, lastName, email, passwd, isAdmin) values("${data.firstName}","${data.lastName}","${data.email}","${data.passwd}",${data.isAdmin})`;
+    let sqlQuery = `insert into user(firstName, lastName, email, passwd, isAdmin) values("${data.firstName}","${data.lastName}","${data.email}","${data.password}",${data.isAdmin})`;
     return new Promise((resolve, reject) => {
         mysqlConnection.query(sqlQuery, (err, rows) => {
             if (err) {
