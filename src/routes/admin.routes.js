@@ -96,17 +96,13 @@ router.get('/', (req, res) => {
  *                          $ref: '#/components/schemas/InputAdmin'
  *          responses:
  *              200:
- *                  description:
- *                  content:
- *                      application/json:
- *                          schema: 
- *                              $ref: '#/components/schemas/Admin'
- *              404:
- *                  description: The user not found  
+ *                  description: "success: true"
+ *              500:
+ *                  description: Something went wrong
  */
 router.post('/', (req, res) => {
     addUser(req.body).then(ress => {
-        res.send('user added')
+        res.send({ success: true })
     }).catch(err => {
         res.status(500).send(err);
     })
