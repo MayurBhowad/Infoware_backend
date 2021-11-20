@@ -14,7 +14,7 @@ const options = {
             version: "1.0.0",
             description: "backend for Infoware system"
         },
-        servers: [{ url: "http://localhost:4001" }],
+        servers: [{ url: "http://localhost:4001" }, { url: "https://infoware01.herokuapp.com" }],
     },
     apis: [`./src/routes/*.routes.js`,]
 }
