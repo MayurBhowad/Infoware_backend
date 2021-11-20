@@ -9,10 +9,10 @@ const { getAllUser, getUserById, registerUser } = require('../services/user.serv
 //access    public
 router.get('/', async (req, res) => {
     getAllUser().then(users => {
-        res.json(users)
+        res.json({ success: true, users: users })
     })
         .catch(err => {
-            res.status(500).json(err)
+            res.status(500).json({ success: false, error: err })
         })
 
 })
@@ -22,11 +22,11 @@ router.get('/', async (req, res) => {
 //access    public
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    let data = await getUserById(id)
-    if (data.length > 0) {
-        res.send(data)
+    let user = await getUserById(id)
+    if (user) {
+        res.send({ success: true, user: user })
     } else {
-        res.send('data not found')
+        res.status(404).send({ success: false, message: 'User not found!' })
     }
 })
 
