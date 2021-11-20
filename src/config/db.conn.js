@@ -2,10 +2,10 @@
 const mysql = require('mysql2');
 
 var mysqlConnection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql10924',
-    database: 'infoware',
+    host: process.env.HOST || 'localhost',
+    user: process.env.USER || 'root',
+    password: process.env.PASSWORD || '123123',
+    database: process.env.DATABASE || 'infoware',
     multipleStatements: true
 });
 
