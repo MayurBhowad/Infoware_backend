@@ -4,12 +4,15 @@ const { getUserById } = require("../services/user.service");
 
 
 const verifyToken = async (req, res, next) => {
-    const token =
+    const reqToken =
         req.body.token || req.query.token || req.headers.authorization;
 
-    if (!token) {
+    if (!reqToken) {
         return res.status(403).send({ success: false, message: "A token is required for authentication" });
     }
+
+    let token = reqToken.split(' ')[1]
+
     try {
         const decoded = jwt.verify(token, 'secret');
         const isAdmin = await isUserAdmin(decoded.userid)
