@@ -105,9 +105,29 @@ router.get('/', (req, res) => {
  *                          $ref: '#/components/schemas/InputAdmin'
  *          responses:
  *              200:
- *                  description: "success: true"
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              example:
+ *                                  success: true 
+ *                                  insertId: 1
+ *              403:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              example:
+ *                                  success: false 
+ *                                  message: "A token is required for authentication"
  *              500:
- *                  description: Something went wrong
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              example:
+ *                                  success: false 
+ *                                  message: "something went erong"
  */
 router.post('/', auth, (req, res) => {
     if (!req.user.isAdmin) {
