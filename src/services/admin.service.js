@@ -7,7 +7,12 @@ const isUserAdmin = (id) => {
             if (err) {
                 reject(err)
             } else {
-                resolve(rows[0])
+                let user = rows[0]
+                if (user.isAdmin === 1) {
+                    resolve(true)
+                } else {
+                    resolve(false)
+                }
             }
         })
     })
