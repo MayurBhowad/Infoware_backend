@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mysqlConnection = require('./config/db.conn');
+require('dotenv').config({ path: __dirname + '/.env' })
 
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
