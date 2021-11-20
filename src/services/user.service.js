@@ -24,6 +24,7 @@ const getUserById = id => {
     })
 }
 
+//Register user without admin privilege
 const registerUser = (data) => {
     let sqlQuery = `insert into user(firstName, lastName, email, passwd) values("${data.firstName}","${data.lastName}","${data.email}","${data.passwd}")`;
     return new Promise((resolve, reject) => {
@@ -38,6 +39,7 @@ const registerUser = (data) => {
     })
 }
 
+//Add user by Admin 
 const addUser = (data) => {
     let sqlQuery = `insert into user(firstName, lastName, email, passwd, isAdmin) values("${data.firstName}","${data.lastName}","${data.email}","${data.password}",${data.isAdmin})`;
     return new Promise((resolve, reject) => {
