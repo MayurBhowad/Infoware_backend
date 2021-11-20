@@ -67,6 +67,37 @@ const { getAllUser, getUserById, registerUser } = require('../services/user.serv
  *                  lastName: Doe
  *                  email: john@gmail.com
  *                  password: 123
+ *          LoginUser:
+ *              type: object
+ *              required: 
+ *                  - email
+ *                  - password
+ *              properties:
+ *                  email:
+ *                      type: string
+ *                      description: Email of user
+ *                  password:
+ *                      type: string
+ *                      description: password for account
+ *              example:
+ *                  email: john@gmail.com
+ *                  password: 123
+ *          LoginResponse:
+ *              type: object
+ *              properties:
+ *                  success:
+ *                      type: boolean
+ *                      description: is operation passed or faild
+ *                  email:
+ *                      type: string
+ *                      description: email of user
+ *                  token:
+ *                      type: string
+ *                      description: token
+ *              example:
+ *                  success: true
+ *                  email: john@gmail.com
+ *                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6Ikpshdku.eyJ1c2VyaWQiOjEsImlhdCI6MTYzNzQwNTcyMiwiZXhwIjoxNjM3NDEyOTIyfQ.0qMwf3Dc9gAXg3ZYx9PLEIUrGfxdvQmkfn3_Zret08U
  *      responses:
  *          404NotFound:       # Can be referenced as '#/components/responses/404NotFound'
  *              description: The specified resource was not found.
@@ -181,6 +212,28 @@ router.post('/', (req, res) => {
 //@desc     login user
 //@route    POST /api/user/login
 //access    public
+/**
+ * @swagger
+ * /api/user/login:
+ *      post:
+ *          summary: Login user
+ *          tags: [User]
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          $ref: '#/components/schemas/LoginUser'
+ *          responses:
+ *              200:
+ *                  description:
+ *                  content:
+ *                      application/json:
+ *                          schema: 
+ *                              $ref: '#/components/schemas/LoginResponse'
+ *              404:
+ *                  description: The user not found  
+ */
 router.post('/login', (req, res) => {
     authenticateUser(req.body).then(token => {
         let ress = {
