@@ -14,10 +14,13 @@ const authenticateUser = data => {
                 reject(err)
             } else {
                 let user = rows[0]
-                if (await bcrypt.compare(data.password, user.passwd)) {
+                if (!user) {
+                    reject({ status: 404, message: 'user not found' })
+                }
+                if (user && await bcrypt.compare(data.password, user.passwd)) {
                     resolve(generateToken(user.userid, user.email))
                 } else {
-                    reject('password check failed')
+                    reject({ status: 400, message: 'password check faild' })
                 }
             }
         })
