@@ -14,6 +14,9 @@ const options = {
             version: "1.0.0",
             description: "backend for Infoware system"
         },
+        swaggerOptions: {
+            authAction: { authentication: { name: "authentication", schema: { type: "apiKey", in: "header", name: "Authorization", description: "" }, value: "<JWT>" } }
+        },
         servers: [{ url: "http://localhost:4001" }, { url: "https://infoware01.herokuapp.com" }],
     },
     apis: [`./src/routes/*.routes.js`,]

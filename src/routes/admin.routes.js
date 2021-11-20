@@ -6,6 +6,12 @@ const router = require('express').Router();
 /**
  * @swagger
  * components:
+ *      securitySchemes:
+ *          token:
+ *              type: http
+ *              scheme: bearer
+ *              in: header  
+ *              bearerFormat: JWT
  *      schemas:
  *          Admin:
  *              type: object
@@ -39,7 +45,7 @@ const router = require('express').Router();
  *                  firstName: John
  *                  lastName: Doe
  *                  email: john@gmail.com
- *                  password: 123
+ *                  password: "123"
  *                  isAdmin: false
  *          InputAdmin:
  *              type: object
@@ -69,7 +75,7 @@ const router = require('express').Router();
  *                  firstName: John
  *                  lastName: Doe
  *                  email: john@gmail.com
- *                  password: 123
+ *                  password: "123"
  *                  isAdmin: false
  *      responses:
  *          404NotFound:       # Can be referenced as '#/components/responses/404NotFound'
@@ -87,8 +93,10 @@ router.get('/', (req, res) => {
  * @swagger
  * /api/admin:
  *      post:
- *          summary: Register new user
+ *          summary: Add new user
  *          tags: [Admin]
+ *          security:
+ *              - token: ''
  *          requestBody:
  *              required: true
  *              content:
@@ -108,6 +116,7 @@ router.post('/', auth, (req, res) => {
     addUser(req.body).then(userid => {
         res.send({ success: true, insertId: userid })
     }).catch(err => {
+        console.log(err);
         res.status(500).send({ success: false, error: err });
     })
 })

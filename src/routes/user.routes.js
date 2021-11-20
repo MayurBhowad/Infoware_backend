@@ -1,10 +1,7 @@
 const router = require('express').Router();
-const auth = require('../middleware/auth.middleware');
 
-const mysqlConnection = require('../config/db.conn');
 const { authenticateUser } = require('../services/auth.service');
 const { getAllUser, getUserById, registerUser } = require('../services/user.service');
-const { isUserAdmin } = require('../services/admin.service');
 
 
 /**
@@ -42,7 +39,7 @@ const { isUserAdmin } = require('../services/admin.service');
  *                  firstName: John
  *                  lastName: Doe
  *                  email: john@gmail.com
- *                  password: 123
+ *                  password: "123"
  *                  isAdmin: false
  *          InputUser:
  *              type: object
@@ -68,7 +65,7 @@ const { isUserAdmin } = require('../services/admin.service');
  *                  firstName: John
  *                  lastName: Doe
  *                  email: john@gmail.com
- *                  password: 123
+ *                  password: "123"
  *          LoginUser:
  *              type: object
  *              required: 
@@ -83,7 +80,7 @@ const { isUserAdmin } = require('../services/admin.service');
  *                      description: password for account
  *              example:
  *                  email: john@gmail.com
- *                  password: 123
+ *                  password: "123"
  *          LoginResponse:
  *              type: object
  *              properties:
