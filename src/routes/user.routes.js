@@ -81,25 +81,6 @@ const { getAllUser, getUserById, registerUser } = require('../services/user.serv
  *              example:
  *                  email: john@gmail.com
  *                  password: "123"
- *          LoginResponse:
- *              type: object
- *              properties:
- *                  success:
- *                      type: boolean
- *                      description: is operation passed or faild
- *                  email:
- *                      type: string
- *                      description: email of user
- *                  token:
- *                      type: string
- *                      description: token
- *              example:
- *                  success: true
- *                  email: john@gmail.com
- *                  token: eyJhbGciOiJIUzI1NiIsInR5cCI6Ikpshdku.eyJ1c2VyaWQiOjEsImlhdCI6MTYzNzQwNTcyMiwiZXhwIjoxNjM3NDEyOTIyfQ.0qMwf3Dc9gAXg3ZYx9PLEIUrGfxdvQmkfn3_Zret08U
- *      responses:
- *          404NotFound:       # Can be referenced as '#/components/responses/404NotFound'
- *              description: The specified resource was not found.
  */
 
 
@@ -204,6 +185,9 @@ router.post('/', (req, res) => {
         ress.token = token
         res.send(ress);
     }).catch(err => {
+        if (err.errno === 1062) {
+            return res.status(400).send({ success: false, error: err.sqlMessage })
+        }
         res.status(500).send({ success: false, error: err })
     })
 })
@@ -225,13 +209,31 @@ router.post('/', (req, res) => {
  *                          $ref: '#/components/schemas/LoginUser'
  *          responses:
  *              200:
- *                  description:
  *                  content:
  *                      application/json:
- *                          schema: 
- *                              $ref: '#/components/schemas/LoginResponse'
+ *                              schema:
+ *                                  type: object
+ *                                  example:
+ *                                      success: true
+ *                                      email: "john@gmail.com"
+ *                                      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCas.eyJ1c2VyaWQiOjEsImVtYWlsIjoibmlja0BnbWFpbC5jb20iLCJpYXQiOjE2Mzc0NDIxMDQsImV4cCI6MTYzNzQ0OTMwNH0.B02KwJWt_C74TDgybHNBwZDb4bKHq9Ihu0u1yHERJwU"
+ *              400:
+ *                  content:
+ *                      application/json:
+ *                              schema:
+ *                                  type: object
+ *                                  example:
+ *                                      success: false
+ *                                      message: Pasword check faild
  *              404:
- *                  description: The user not found  
+ *                  content:
+ *                      application/json:
+ *                              schema:
+ *                                  type: object
+ *                                  example:
+ *                                      success: false
+ *                                      message: user not found
+ *               
  */
 router.post('/login', (req, res) => {
     authenticateUser(req.body).then(token => {
@@ -242,7 +244,7 @@ router.post('/login', (req, res) => {
         }
         res.json(ress)
     }).catch(err => {
-        res.status(500).json(err)
+        res.status(err.status).json({ success: false, message: err.message })
     })
 })
 

@@ -75,7 +75,7 @@ const router = require('express').Router();
  */
 
 
-//@desc     get all products
+//@desc     get All products
 //@route    GET /api/product
 //access    public
 /**
@@ -86,15 +86,24 @@ const router = require('express').Router();
  *          tags: [Product]
  *          responses:
  *              200:
- *                  description: The list of products
  *                  content:
  *                      application/json:
  *                          schema:
- *                              type: array
- *                              items:
- *                                  $ref: '#/components/schemas/Product'
+ *                              type: object
+ *                              example:
+ *                                  success: true
+ *                                  products: [
+ *                                              {"productid": 1, "productTitle": "product one", "productPrice": 20, "productDetails": "this is description of product one"},
+ *                                              {"productid": 2, "productTitle": "product two", "productPrice": 30, "productDetails": "this is description of product two"}
+ *                                            ]
  *              404:
- *                  description: product Not Found
+ *                  content:
+ *                      application/json:
+ *                              schema:
+ *                                  type: object
+ *                                  example:
+ *                                      success: false
+ *                                      message: product not found
  *                              
  */
 router.get('/', async (req, res) => {
@@ -102,7 +111,7 @@ router.get('/', async (req, res) => {
     res.send({ success: true, products: products })
 })
 
-//@desc     Add Product
+//@desc     Add new product
 //@route    POST /api/product
 //access    private
 /**
@@ -121,13 +130,22 @@ router.get('/', async (req, res) => {
  *                          $ref: '#/components/schemas/AddProduct'
  *          responses:
  *              200:
- *                  description:
  *                  content:
  *                      application/json:
- *                          schema: 
- *                              $ref: '#/components/schemas/Product'
- *              404:
- *                  description: The user not found  
+ *                          schema:
+ *                              type: object
+ *                              example:
+ *                                  success: true
+ *                                  productId: 1
+ *                                  message: product added
+ *              403:
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              example:
+ *                                  success: false
+ *                                  message: Access denied!
  */
 router.post('/', auth, (req, res) => {
     if (!req.user.isAdmin) {

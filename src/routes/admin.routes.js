@@ -136,7 +136,9 @@ router.post('/', auth, (req, res) => {
     addUser(req.body).then(userid => {
         res.send({ success: true, insertId: userid })
     }).catch(err => {
-        console.log(err);
+        if (err.errno === 1062) {
+            return res.status(400).send({ success: false, error: err.sqlMessage });
+        }
         res.status(500).send({ success: false, error: err });
     })
 })
