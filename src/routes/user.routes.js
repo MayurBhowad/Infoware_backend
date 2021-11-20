@@ -1,5 +1,7 @@
 const router = require('express').Router();
+
 const mysqlConnection = require('../config/db.conn');
+const { authenticateUser } = require('../services/auth.service');
 const { getAllUser, getUserById, registerUser } = require('../services/user.service');
 
 
@@ -166,10 +168,29 @@ router.get('/:id', async (req, res) => {
  *                  description: The user not found  
  */
 router.post('/', (req, res) => {
-    registerUser(req.body).then(user => {
-        res.send('user added successfullY!');
+    registerUser(req.body).then(token => {
+        let ress = {}
+        ress.success = true;
+        ress.token = token
+        res.send(ress);
     }).catch(err => {
-        res.status(500).send(err)
+        res.status(500).send({ success: false, error: err })
+    })
+})
+
+//@desc     login user
+//@route    POST /api/user/login
+//access    public
+router.post('/login', (req, res) => {
+    authenticateUser(req.body).then(token => {
+        let ress = {
+            success: true,
+            email: req.body.email,
+            token: token
+        }
+        res.json(ress)
+    }).catch(err => {
+        res.status(500).json(err)
     })
 })
 

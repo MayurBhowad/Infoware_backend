@@ -1,4 +1,6 @@
 const mysqlConnection = require("../config/db.conn")
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const getAllUser = () => {
     return new Promise((resolve, reject) => {
@@ -24,22 +26,42 @@ const getUserById = id => {
     })
 }
 
+<<<<<<< HEAD
 const registerUser = (data) => {
     let sqlQuery = `insert into user(firstName, lastName, email, passwd) values("${data.firstName}","${data.lastName}","${data.email}","${data.password}")`;
+=======
+
+//Register user
+const registerUser = async (data) => {
+    let encryptedPassword = await bcrypt.hash(data.password, 10);
+
+    function generateToken(id, email) {
+        return jwt.sign({ userid: id, email }, 'secret', { expiresIn: "2h" });
+    }
+
+    let sqlQuery = `insert into user(firstName, lastName, email, passwd) values("${data.firstName}","${data.lastName}","${data.email}","${encryptedPassword}")`;
+>>>>>>> main
     return new Promise((resolve, reject) => {
         mysqlConnection.query(sqlQuery, (err, rows) => {
             if (err) {
                 reject(err)
             } else {
-                resolve(rows)
+                resolve(generateToken(rows.insertId, data.email))
             }
 
         })
     })
 }
 
+<<<<<<< HEAD
 const addUser = (data) => {
     let sqlQuery = `insert into user(firstName, lastName, email, passwd, isAdmin) values("${data.firstName}","${data.lastName}","${data.email}","${data.password}",${data.isAdmin})`;
+=======
+//Add user by Admin
+const addUser = async (data) => {
+    let encryptedPassword = await bcrypt.hash(data.password, 10);
+    let sqlQuery = `insert into user(firstName, lastName, email, passwd, isAdmin) values("${data.firstName}","${data.lastName}","${data.email}","${encryptedPassword}",${data.isAdmin})`;
+>>>>>>> main
     return new Promise((resolve, reject) => {
         mysqlConnection.query(sqlQuery, (err, rows) => {
             if (err) {
@@ -51,5 +73,6 @@ const addUser = (data) => {
         })
     })
 }
+
 
 module.exports = { getAllUser, getUserById, registerUser, addUser }
