@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const getAllUser = () => {
     return new Promise((resolve, reject) => {
-        mysqlConnection.query('select userid, firstName, lastName, email,creation_time, modification_time from user', (err, rows) => {
+        mysqlConnection.query('select userid, firstName, lastName, email from user', (err, rows) => {
             if (err) {
                 reject(err)
             } else {
@@ -16,7 +16,7 @@ const getAllUser = () => {
 
 const getUserById = id => {
     return new Promise((resolve, reject) => {
-        mysqlConnection.query('select userid, firstName, lastName, email,creation_time, modification_time from user where userid = ?', [id], (err, rows) => {
+        mysqlConnection.query('select userid, firstName, lastName, email from user where userid = ?', [id], (err, rows) => {
             if (err) {
                 reject(err)
             } else {
