@@ -16,11 +16,11 @@ const getAllUser = () => {
 
 const getUserById = id => {
     return new Promise((resolve, reject) => {
-        mysqlConnection.query('select userid, firstName, lastName, email from user where userid = ?', [id], (err, rows) => {
+        mysqlConnection.query('select userid, firstName, lastName, email, isAdmin from user where userid = ?', [id], (err, rows) => {
             if (err) {
                 reject(err)
             } else {
-                resolve(rows)
+                resolve(rows[0])
             }
         })
     })
@@ -57,7 +57,7 @@ const addUser = async (data) => {
             if (err) {
                 reject(err)
             } else {
-                resolve(rows)
+                resolve(rows.insertId)
             }
 
         })

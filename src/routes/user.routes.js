@@ -131,10 +131,10 @@ const { isUserAdmin } = require('../services/admin.service');
  */
 router.get('/', async (req, res) => {
     getAllUser().then(users => {
-        res.json(users)
+        res.json({ success: true, users: users })
     })
         .catch(err => {
-            res.status(500).json(err)
+            res.status(500).json({ success: false, error: err })
         })
 
 })
@@ -167,11 +167,11 @@ router.get('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
-    let data = await getUserById(id)        //returns []
-    if (data.length > 0) {
-        res.send(data)
+    let user = await getUserById(id)
+    if (user) {
+        res.send({ success: true, user: user })
     } else {
-        res.status(404).send('data not found')
+        res.status(404).send({ success: false, message: 'User not found!' })
     }
 })
 
