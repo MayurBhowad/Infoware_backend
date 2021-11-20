@@ -1,8 +1,10 @@
 const router = require('express').Router();
+const auth = require('../middleware/auth.middleware');
 
 const mysqlConnection = require('../config/db.conn');
 const { authenticateUser } = require('../services/auth.service');
 const { getAllUser, getUserById, registerUser } = require('../services/user.service');
+const { isUserAdmin } = require('../services/admin.service');
 
 
 /**
