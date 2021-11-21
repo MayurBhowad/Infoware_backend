@@ -104,7 +104,13 @@ const { getAllUser, getUserById, registerUser } = require('../services/user.serv
  *                              items:
  *                                  $ref: '#/components/schemas/User'
  *              404:
- *                  description: Users Not Found
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              example:
+ *                                  success: false
+ *                                  message: user not found
  *                              
  */
 router.get('/', async (req, res) => {
@@ -141,7 +147,13 @@ router.get('/', async (req, res) => {
  *                          schema: 
  *                              $ref: '#/components/schemas/User'
  *              404:
- *                  description: The user not found  
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              type: object
+ *                              example:
+ *                                  success: false
+ *                                  message: user not found!
  */
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
