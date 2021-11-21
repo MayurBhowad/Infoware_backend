@@ -1,13 +1,25 @@
-const { newOrder } = require('../services/order.service');
+const { newOrder, getAllOrderForUser, getAllOrderForAdmin } = require('../services/order.service');
 const auth = require('../middleware/auth.middleware');
 
 const router = require('express').Router();
 
 //@desc     test route
 //@route    GET /api/order
-//access    public
-router.get('/', (req, res) => {
-    res.send({ msg: 'order router pass' })
+//access    private
+router.get('/', auth, (req, res) => {
+    if (req.user.isAdmin) {
+        getAllOrderForAdmin().then(response => {
+            return res.send({ success: true, orders: response })
+        }).catch(err => {
+            return res.status(500).json({ success: false, message: 'Server Error' })
+        })
+    } else {
+        getAllOrderForUser(req.user.userid).then(result => {
+            return res.send({ success: true, orders: result })
+        }).catch(err => {
+            return res.status(500).json({ success: false, message: 'Server Error' })
+        })
+    }
 })
 
 //@desc     new Order
@@ -21,7 +33,7 @@ router.post('/', auth, (req, res) => {
      * ]
      */
 
-    newOrder(req.body.products, req.user.userid).then(response => {
+    newOrder(req.body, req.user.userid).then(response => {
         return res.json({ success: true, data: response.record })
     }).catch(err => {
         res.status(500).json({ success: false, message: 'server error' })
