@@ -25,6 +25,7 @@
     "mysql2": "^2.3.3",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "short-uuid": "^4.2.0"
   }
 }
